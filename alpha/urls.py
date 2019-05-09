@@ -26,6 +26,7 @@ urlpatterns = [
     path('', views.HomePageView.as_view(), name = 'home'),
     path('contact/', views.ContactPageView.as_view(), name = 'contact'),
     path('login/', views.LoginPageView, name = 'login'),
+    path('register/', views.RegisterPageView, name = 'register'),
 ]
 
 

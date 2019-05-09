@@ -1,10 +1,10 @@
-from django.contrib.auth import authenticate, login 
+from django.contrib.auth import authenticate, login, get_user_model 
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
 
-from .forms import ContactForm, LoginForm
+from .forms import ContactForm, LoginForm, RegisterForm
 
 class HomePageView(TemplateView):
 	template_name = 'home.html'
@@ -39,3 +39,22 @@ def LoginPageView(request):
 		else:
 			print("Error")
 	return render(request, 'auth/login.html', context)
+
+
+User = get_user_model()
+
+def RegisterPageView(request):
+	form = RegisterForm(request.POST or None)
+	# template_name = 'auth/login.html'
+	# success_url = 'home.html'
+	context = {
+		'form': form
+	}
+
+	if form.is_valid():
+		username = form.cleaned_data.get("username")
+		email = form.cleaned_data.get("email")
+		password = form.cleaned_data.get("password")
+		new_user = User.objects.filter(username, email, password)
+		print(new_user)
+	return render(request, 'auth/register.html', context)
